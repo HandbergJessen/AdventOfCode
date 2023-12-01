@@ -2,6 +2,6 @@ namespace AdventOfCode.Foundation;
 
 public interface IChallenge
 {
-    public string ChallengeA(string[] input);
-    public string ChallengeB(string[] input);
+    public string PartA(string[] input);
+    public string PartB(string[] input);
 }

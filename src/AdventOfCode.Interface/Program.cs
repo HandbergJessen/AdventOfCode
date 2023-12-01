@@ -2,11 +2,12 @@
 using AdventOfCode.Data;
 using AdventOfCode.Process;
 using AdventOfCode.Foundation;
+using System.Formats.Asn1;
 
 const string usage = @"AdventOfCode
 
 Usage: 
-    AOF challenge (<year>) (<user>) (<day>)
+    AOF challenge (<user>) (<year>) (<day>)
 ";
 
 IDictionary<string, ValueObject> arguments = new Docopt().Apply(usage, args, exit: true)!;
@@ -28,7 +29,11 @@ if (arguments["challenge"].IsTrue)
 
     if (challenge != null)
     {
-        challenge.ChallengeA(data);
+        Console.WriteLine("Answer to part A.");
+        Console.WriteLine(challenge.PartA(data));
+        Console.WriteLine();
+        Console.WriteLine("Answer to part B.");
+        Console.WriteLine(challenge.PartB(data));
     }
     else
     {

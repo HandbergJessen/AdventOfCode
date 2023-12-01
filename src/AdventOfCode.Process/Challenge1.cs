@@ -4,13 +4,53 @@ namespace AdventOfCode.Process;
 
 public class Challenge1 : IChallenge
 {
-    public string ChallengeA(string[] input)
+    public string PartA(string[] input)
     {
-        throw new NotImplementedException();
+        int value = 0;
+
+        foreach (string line in input)
+        {
+            value += GetValueA(line);
+        }
+
+        return value.ToString();
     }
 
-    public string ChallengeB(string[] input)
+    public string PartB(string[] input)
     {
-        throw new NotImplementedException();
+        int value = 0;
+
+        foreach (string line in input)
+        {
+            value += GetValueB(line);
+        }
+
+        return value.ToString();
+    }
+
+    private static int GetValueA(string line)
+    {
+        int first = 0;
+        int last = 0;
+
+        foreach (char character in line)
+        {
+            if (int.TryParse(character.ToString(), out int value))
+            {
+                if (first == 0)
+                {
+                    first = value;
+                }
+
+                last = value;
+            }
+        }
+
+        return first * 10 + last;
+    }
+
+    private static int GetValueB(string line)
+    {
+        return 0;
     }
 }
