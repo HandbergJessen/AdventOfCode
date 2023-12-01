@@ -25,7 +25,7 @@ public class Challenge1 : IChallenge
             value += GetValueB(line);
         }
 
-        return value.ToString();
+        return "Not finished!";
     }
 
     private static int GetValueA(string line)

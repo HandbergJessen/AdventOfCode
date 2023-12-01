@@ -6,10 +6,10 @@ public class Challenge2 : IChallenge
 {
     public string PartA(string[] input)
     {
-        throw new NotImplementedException();
+        return "Not finished!";
     }
     public string PartB(string[] input)
     {
-        throw new NotImplementedException();
+        return "Not finished!";
     }
 }

@@ -29,11 +29,16 @@ if (arguments["challenge"].IsTrue)
 
     if (challenge != null)
     {
+        Console.WriteLine();
+        Console.WriteLine("User: " + user);
+        Console.WriteLine("Challenge: " + year + "-" + day);
+        Console.WriteLine();
         Console.WriteLine("Answer to part A.");
         Console.WriteLine(challenge.PartA(data));
         Console.WriteLine();
         Console.WriteLine("Answer to part B.");
         Console.WriteLine(challenge.PartB(data));
+        Console.WriteLine();
     }
     else
     {
