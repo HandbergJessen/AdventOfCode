@@ -2,8 +2,8 @@ namespace AdventOfCode.Data;
 
 public class DataAccess : IDataAccess
 {
-    public string[] GetData(string user, string year, string day)
+    public string[] GetData(string path)
     {
-        return File.ReadAllLines("../AdventOfCode.Data/data/" + user + "/" + year + "-" + day + ".txt");
+        return File.ReadAllLines(path);
     }
 }

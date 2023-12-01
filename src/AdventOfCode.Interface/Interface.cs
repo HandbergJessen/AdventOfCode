@@ -38,15 +38,16 @@ public class Interface
             string year = arguments["<year>"].ToString();
             string day = arguments["<day>"].ToString();
 
-            IChallenge? challenge = challenges.GetValueOrDefault(year + "-" + day);
+            IDataAccess dataAccess = new DataAccess();
+            IChallenge? challenge = challenges.GetValueOrDefault($"{year}-{day}");
 
             if (challenge != null)
             {
-                string[] data = new DataAccess().GetData(user, year, day);
+                string[] data = dataAccess.GetData($"../AdventOfCode.Data/data/{user}/{year}-{day}.txt");
 
                 Console.WriteLine();
-                Console.WriteLine("User: " + user);
-                Console.WriteLine("Challenge: " + year + "-" + day);
+                Console.WriteLine($"User: {user}");
+                Console.WriteLine($"Challenge: {year}-{day}");
                 Console.WriteLine();
 
                 if (arguments["a"].IsTrue)

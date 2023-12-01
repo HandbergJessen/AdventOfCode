@@ -2,5 +2,5 @@ namespace AdventOfCode.Foundation;
 
 public interface IDataAccess
 {
-    public string[] GetData(string user, string year, string day);
+    public string[] GetData(string path);
 }
