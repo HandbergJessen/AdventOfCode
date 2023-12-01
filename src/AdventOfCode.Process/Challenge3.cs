@@ -1,5 +1,3 @@
-using AdventOfCode.Foundation;
-
 namespace AdventOfCode.Process;
 
 public class Challenge3 : IChallenge
