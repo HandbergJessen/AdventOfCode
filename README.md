@@ -12,7 +12,7 @@ A christmas event - Solved with C#
   - Mail: p.h.jessen45@gmail.com
   - Github: https://github.com/patrogue
 
-## Running the application
+## Running the project
 - Change directory to `AdventOfCode/src/AdventofCode.Interface`.  
 - Use `dotnet run <user> <year> <day>`, to run both parts of a particular day.
 - Use `dotnet run <user> <year> <day> a`, to run part a of a particular day.
