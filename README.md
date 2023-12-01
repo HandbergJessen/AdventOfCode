@@ -1,5 +1,5 @@
 # AdventOfCode
-A christmas event with various puzzles - Solved with C# 
+A christmas event - Solved with C# 
 
 ## Group members
 - Brian Handberg Jessen
