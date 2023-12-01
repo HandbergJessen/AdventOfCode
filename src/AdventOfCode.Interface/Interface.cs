@@ -1,8 +1,3 @@
-using DocoptNet;
-using AdventOfCode.Data;
-using AdventOfCode.Process;
-using AdventOfCode.Foundation;
-
 namespace AdventOfCode.Interface;
 
 public class Interface

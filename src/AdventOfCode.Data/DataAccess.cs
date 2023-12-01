@@ -1,5 +1,3 @@
-using AdventOfCode.Foundation;
-
 namespace AdventOfCode.Data;
 
 public class DataAccess : IDataAccess

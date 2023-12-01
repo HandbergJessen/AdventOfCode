@@ -1,7 +1,4 @@
-﻿using AdventOfCode.Interface;
-using DocoptNet;
-
-const string usage = @"AdventOfCode
+﻿const string usage = @"AdventOfCode
 
 Usage: 
     AOF challenge (<user>) (<year>) (<day>) [a | b]
