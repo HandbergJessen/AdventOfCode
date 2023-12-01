@@ -5,7 +5,9 @@ A christmas event - Solved with C#
 - Brian Handberg Jessen
   - Mail: brianj@stubnet.dk
   - Github: https://github.com/E47030
-  
+
+<br>
+
 - Patrick Handberg Jessen
   - Mail: p.h.jessen45@gmail.com
   - Github: https://github.com/patrogue
