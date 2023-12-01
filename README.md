@@ -3,12 +3,12 @@ A christmas event with various puzzles - Solved with C#
 
 ## Group members
 - Brian Handberg Jessen
-  - Mail: <apno@itu.dk>  
-  - Github: https://github.com/zqueamish
+  - Mail:  
+  - Github: 
   
 - Patrick Handberg Jessen
   - Mail:
-  - Github: https://github.com/PatrickHJessen
+  - Github: 
 
 ## Running the application
 - Change directory to `AdventOfCode/src/AdventofCode.Interface`.  
