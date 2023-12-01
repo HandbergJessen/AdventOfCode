@@ -6,7 +6,7 @@ using AdventOfCode.Foundation;
 const string usage = @"AdventOfCode
 
 Usage: 
-    AOF challenge (<year>) (<user>) (<number>)
+    AOF challenge (<year>) (<user>) (<day>)
 ";
 
 IDictionary<string, ValueObject> arguments = new Docopt().Apply(usage, args, exit: true)!;
@@ -21,10 +21,10 @@ if (arguments["challenge"].IsTrue)
 {
     string user = arguments["<user>"].ToString();
     string year = arguments["<year>"].ToString();
-    string number = arguments["<number>"].ToString();
+    string day = arguments["<day>"].ToString();
 
-    string[] data = dataAccess.GetData(user, year, number);
-    IChallenge? challenge = challenges.GetValueOrDefault(year + "-" + number);
+    string[] data = dataAccess.GetData(user, year, day);
+    IChallenge? challenge = challenges.GetValueOrDefault(year + "-" + day);
 
     if (challenge != null)
     {
