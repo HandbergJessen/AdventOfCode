@@ -2,15 +2,15 @@ using AdventOfCode.Foundation;
 
 namespace AdventOfCode.Process;
 
-public class Challenge1 : IChallenge {
-    public string ChallengeA(string[] input) {
-        foreach (string line in input) {
-            Console.WriteLine(line);
-        }
-
-        return "";
+public class Challenge1 : IChallenge
+{
+    public string ChallengeA(string[] input)
+    {
+        throw new NotImplementedException();
     }
-    public string ChallengeB(string[] input) {
+
+    public string ChallengeB(string[] input)
+    {
         throw new NotImplementedException();
     }
 }

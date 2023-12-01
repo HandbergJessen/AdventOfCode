@@ -9,37 +9,29 @@ Usage:
     AOF challenge (<year>) (<user>) (<number>)
 ";
 
-Console.WriteLine("hello");
-
 IDictionary<string, ValueObject> arguments = new Docopt().Apply(usage, args, exit: true)!;
 IDataAccess dataAccess = new DataAccess();
-
-Console.WriteLine("hello1");
 
 Dictionary<string, IChallenge> challenges = new() {
     { "2023-1", new Challenge1() },
     { "2023-2", new Challenge2() }
 };
 
-Console.WriteLine("hello2");
-
-if (arguments["challenge"].IsTrue) {
-    string year = arguments["<year>"].ToString();
+if (arguments["challenge"].IsTrue)
+{
     string user = arguments["<user>"].ToString();
+    string year = arguments["<year>"].ToString();
     string number = arguments["<number>"].ToString();
 
-    Console.WriteLine("hello3");
-
-    string[] data = dataAccess.GetData(year, user, number);
+    string[] data = dataAccess.GetData(user, year, number);
     IChallenge? challenge = challenges.GetValueOrDefault(year + "-" + number);
 
-    if (challenge != null) {
-        Console.WriteLine("hello4");
-
+    if (challenge != null)
+    {
         challenge.ChallengeA(data);
-    } else {
-        Console.WriteLine("hello5");
-
+    }
+    else
+    {
         Console.WriteLine("The challenge does not exist yet");
     }
 }
