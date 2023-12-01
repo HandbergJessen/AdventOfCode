@@ -2,7 +2,7 @@ using AdventOfCode.Foundation;
 
 namespace AdventOfCode.Process;
 
-public class Challenge2 : IChallenge
+public class Challenge4 : IChallenge
 {
     public string PartA(string[] input)
     {

@@ -2,7 +2,6 @@
 using AdventOfCode.Data;
 using AdventOfCode.Process;
 using AdventOfCode.Foundation;
-using System.Formats.Asn1;
 
 const string usage = @"AdventOfCode
 
@@ -11,8 +10,8 @@ Usage:
 ";
 
 IDictionary<string, ValueObject> arguments = new Docopt().Apply(usage, args, exit: true)!;
-IDataAccess dataAccess = new DataAccess();
 
+IDataAccess dataAccess = new DataAccess();
 Dictionary<string, IChallenge> challenges = new() {
     { "2023-1", new Challenge1() },
     { "2023-2", new Challenge2() }
@@ -42,6 +41,6 @@ if (arguments["challenge"].IsTrue)
     }
     else
     {
-        Console.WriteLine("The challenge does not exist yet");
+        Console.WriteLine("The challenge you are trying to run does not exists!");
     }
 }
