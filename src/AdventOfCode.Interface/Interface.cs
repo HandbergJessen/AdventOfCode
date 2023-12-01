@@ -7,7 +7,7 @@ namespace AdventOfCode.Interface;
 
 public class Interface
 {
-    private static Dictionary<string, IChallenge> challenges = new() {
+    private static readonly Dictionary<string, IChallenge> challenges = new() {
         { "2023-1", new Challenge1() },
         { "2023-2", new Challenge2() },
         { "2023-3", new Challenge3() },
