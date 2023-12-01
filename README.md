@@ -12,4 +12,5 @@ A christmas event with various puzzles - Solved with C#
 
 ## Running the application
 - Change directory to `AdventOfCode/src/AdventofCode.Interface`.  
-- Use `dotnet run <user> <year> <day>`, to run the application.
+- Use `dotnet run <user> <year> <day>`, to run both parts of a challenge.
+- Use `dotnet run <user> <year> <day> (a | b)`, to run one of the parts of a challenge.
