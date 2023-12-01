@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2023 HandbergJessen
+Copyright (c) 2023 Patrick Handberg Jessen and Brian Handberg Jessen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
