@@ -10,7 +10,7 @@ public class Challenge1 : IChallenge
 
         foreach (string line in input)
         {
-            value += GetValueA(line);
+            value += GetValue(line);
         }
 
         return value.ToString();
@@ -22,13 +22,13 @@ public class Challenge1 : IChallenge
 
         foreach (string line in input)
         {
-            value += GetValueB(line);
+            value += GetValue(Convert(line));
         }
 
-        return "Not finished!";
+        return value.ToString();
     }
 
-    private static int GetValueA(string line)
+    private static int GetValue(string line)
     {
         int first = 0;
         int last = 0;
@@ -49,8 +49,16 @@ public class Challenge1 : IChallenge
         return first * 10 + last;
     }
 
-    private static int GetValueB(string line)
+    private static string Convert(string line)
     {
-        return 0;
+        return line.Replace("one", "o1e")
+                   .Replace("two", "t2o")
+                   .Replace("three", "t3e")
+                   .Replace("four", "4")
+                   .Replace("five", "5e")
+                   .Replace("six", "6")
+                   .Replace("seven", "7n")
+                   .Replace("eight", "e8t")
+                   .Replace("nine", "n9e");
     }
 }
