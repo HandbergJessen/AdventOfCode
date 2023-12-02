@@ -1,5 +1,3 @@
-using System.Reflection.Metadata;
-
 namespace AdventOfCode.Process;
 
 public class Challenge2 : IChallenge
@@ -31,44 +29,14 @@ public class Challenge2 : IChallenge
         return value.ToString();
     }
 
-    private int Power(string line)
+    private static bool ValidGame(string game)
     {
-        int redPower = 0;
-        int greenPower = 0;
-        int bluePower = 0;
-        string[] cube = line.Split(new char[] { ':', ';', ',' });
+        string[] rounds = game.Split(new char[] { ':', ';', ',' });
 
         // Game X, from before : is skipped by i=1 instead of i=0
-        for (int i = 1; i < cube.Length; i++)
+        for (int i = 1; i < rounds.Length; i++)
         {
-            string[] cubeDetails = cube[i].Split(' ');
-
-            if (cubeDetails[2].Contains("red") && int.Parse(cubeDetails[1]) > redPower)
-            {
-                redPower = int.Parse(cubeDetails[1]);
-            }
-            else if (cubeDetails[2].Contains("green") && int.Parse(cubeDetails[1]) > greenPower)
-            {
-                greenPower = int.Parse(cubeDetails[1]);
-            }
-            else if (cubeDetails[2].Contains("blue") && int.Parse(cubeDetails[1]) > bluePower)
-            {
-                bluePower = int.Parse(cubeDetails[1]);
-            }
-        }
-
-        return redPower * greenPower * bluePower;
-    }
-
-
-    private bool ValidGame(string line)
-    {
-        string[] splitLines = line.Split(new char[] { ':', ';', ',' });
-
-        // Game X, from before : is skipped by i=1 instead of i=0
-        for (int i = 1; i < splitLines.Length; i++)
-        {
-            if (!ValidRound(splitLines[i]))
+            if (!ValidRound(rounds[i]))
             {
                 return false;
             }
@@ -77,25 +45,56 @@ public class Challenge2 : IChallenge
         return true;
     }
 
-    private bool ValidRound(string line)
+    private static bool ValidRound(string round)
     {
-        string[] splitLine = line.Split(' ');
+        string[] roundDetails = round.Split(' ');
 
-        if (line.Contains("red") && int.Parse(splitLine[1]) > 12)
-        {
-            return false;
-        }
-        else if (line.Contains("green") && int.Parse(splitLine[1]) > 13)
-        {
-            return false;
-        }
-        else if (line.Contains("blue") && int.Parse(splitLine[1]) > 14)
-        {
-            return false;
-        }
+        int value = int.Parse(roundDetails[1]);
+        string color = roundDetails[2];
 
-        return true;
+        switch (color, value)
+        {
+            case ("red", > 12):
+                return false;
+            case ("green", > 13):
+                return false;
+            case ("blue", > 14):
+                return false;
+            default:
+                return true;
+        }
     }
 
+    private static int Power(string game)
+    {
+        string[] cube = game.Split(new char[] { ':', ';', ',' });
 
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+
+        // Game X, from before : is skipped by i=1 instead of i=0
+        for (int i = 1; i < cube.Length; i++)
+        {
+            string[] cubeDetails = cube[i].Split(' ');
+
+            int value = int.Parse(cubeDetails[1]);
+            string color = cubeDetails[2];
+
+            if (color.Contains("red") && value > red)
+            {
+                red = value;
+            }
+            else if (color.Contains("green") && value > green)
+            {
+                green = value;
+            }
+            else if (color.Contains("blue") && value > blue)
+            {
+                blue = value;
+            }
+        }
+
+        return red * green * blue;
+    }
 }
