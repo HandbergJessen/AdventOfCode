@@ -33,7 +33,6 @@ public class Challenge2 : IChallenge
     {
         string[] rounds = game.Split(new char[] { ':', ';', ',' });
 
-        // Game X, from before : is skipped by i=1 instead of i=0
         for (int i = 1; i < rounds.Length; i++)
         {
             if (!ValidRound(rounds[i]))
@@ -73,7 +72,6 @@ public class Challenge2 : IChallenge
         int green = 0;
         int blue = 0;
 
-        // Game X, from before : is skipped by i=1 instead of i=0
         for (int i = 1; i < cube.Length; i++)
         {
             string[] cubeDetails = cube[i].Split(' ');

@@ -13,6 +13,7 @@ public class Challenge3Tests
 
     [Theory]
     [InlineData("4361", "test", "2023", "3")]
+    [InlineData("528799", "patrick", "2023", "3")]
     [InlineData("527144", "brian", "2023", "3")]
     public void PartATests(string expected, string user, string year, string day)
     {
@@ -28,6 +29,7 @@ public class Challenge3Tests
 
     [Theory]
     [InlineData("467835", "test", "2023", "3")]
+    [InlineData("84907174", "patrick", "2023", "3")]
     [InlineData("81463996", "brian", "2023", "3")]
     public void PartBTests(string expected, string user, string year, string day)
     {

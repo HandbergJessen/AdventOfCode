@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace AdventOfCode.Process;
 
 public class Challenge3 : IChallenge
@@ -37,11 +35,11 @@ public class Challenge3 : IChallenge
 
     public class Star
     {
-        private int xStart;
-        private int yStart;
-        private int xEnd;
-        private int yEnd;
-        private int xPos;
+        private readonly int xStart;
+        private readonly int yStart;
+        private readonly int xEnd;
+        private readonly int yEnd;
+        private readonly int xPos;
 
         public Star(int xPos, int yPos)
         {
@@ -50,13 +48,11 @@ public class Challenge3 : IChallenge
             yStart = yPos - 1;
             xEnd = xPos + 1;
             yEnd = yPos + 1;
-
         }
 
         public int GetGearValue(char[][] grid)
         {
             int totalGearValues = 0;
-
             int numbHit = 0;
             int[] gearValue = new int[6];
 
@@ -83,10 +79,15 @@ public class Challenge3 : IChallenge
                         intValue = (int)char.GetNumericValue(grid[y][x]);
                         gearValue[numbHit] += intValue;
                         factor = 10;
+
                         if (char.IsNumber(grid[y][x - 1]))
                         {
                             xHit = true;
-                            if (x == xPos) xStartHit = true;
+
+                            if (x == xPos)
+                            {
+                                xStartHit = true;
+                            }
 
                             intValue = (int)char.GetNumericValue(grid[y][x - 1]);
                             gearValue[numbHit] += intValue * factor;
@@ -110,6 +111,7 @@ public class Challenge3 : IChallenge
                             intValue = (int)char.GetNumericValue(grid[y][x + 1]);
                             gearValue[numbHit] *= factor;
                             gearValue[numbHit] += intValue;
+
                             if (char.IsNumber(grid[y][x + 2]))
                             {
                                 intValue = (int)char.GetNumericValue(grid[y][x + 2]);
@@ -125,6 +127,7 @@ public class Challenge3 : IChallenge
             {
                 totalGearValues = gearValue[1] * gearValue[2];
             }
+
             return totalGearValues;
         }
     }
@@ -216,7 +219,6 @@ public class Challenge3 : IChallenge
             string value = "";
             for (int x = 0; x < row.Length; x++)
             {
-
                 if (char.IsNumber(row[x]))
                 {
                     if (xPos == -1)
