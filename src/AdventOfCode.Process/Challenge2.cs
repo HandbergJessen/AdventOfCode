@@ -21,9 +21,9 @@ public class Challenge2 : IChallenge
     {
         int value = 0;
 
-        foreach (string line in input)
+        foreach (string game in input)
         {
-            value += Power(line);
+            value += Power(game);
         }
 
         return value.ToString();
