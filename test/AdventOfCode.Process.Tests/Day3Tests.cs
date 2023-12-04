@@ -1,22 +1,22 @@
 namespace AdventOfCode.Process.Tests;
 
-public class Challenge1Tests
+public class Day3Tests
 {
     private readonly IDataAccess _dataAccess;
     private readonly IDay _day;
     private readonly int _dayNumber;
 
-    public Challenge1Tests()
+    public Day3Tests()
     {
         _dataAccess = new DataAccess();
-        _day = new Day1();
-        _dayNumber = 1;
+        _day = new Day3();
+        _dayNumber = 3;
     }
 
     [Theory]
-    [InlineData("351", "test")]
-    [InlineData("55386", "patrick")]
-    [InlineData("53386", "brian")]
+    [InlineData("4361", "test")]
+    [InlineData("528799", "patrick")]
+    [InlineData("527144", "brian")]
     public void PartATests(string expected, string user)
     {
         // Arrange
@@ -30,9 +30,9 @@ public class Challenge1Tests
     }
 
     [Theory]
-    [InlineData("423", "test")]
-    [InlineData("54824", "patrick")]
-    [InlineData("53312", "brian")]
+    [InlineData("467835", "test")]
+    [InlineData("84907174", "patrick")]
+    [InlineData("81463996", "brian")]
     public void PartBTests(string expected, string user)
     {
         // Arrange

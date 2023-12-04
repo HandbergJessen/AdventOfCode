@@ -1,12 +1,12 @@
 namespace AdventOfCode.Process.Tests;
 
-public class Challenge4Tests
+public class Day4Tests
 {
     private readonly IDataAccess _dataAccess;
     private readonly IDay _day;
     private readonly int _dayNumber;
 
-    public Challenge4Tests()
+    public Day4Tests()
     {
         _dataAccess = new DataAccess();
         _day = new Day4();
@@ -28,19 +28,17 @@ public class Challenge4Tests
         Assert.Equal(expected, actual);
     }
 
-    /*
-        [Theory]
-        [InlineData("30", "test")]
-        public void PartBTests(string expected, string user)
-        {
-            // Arrange
-            string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_dayNumber}.txt");
+    [Theory]
+    [InlineData("30", "test")]
+    public void PartBTests(string expected, string user)
+    {
+        // Arrange
+        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_dayNumber}.txt");
 
-            // Act
-            string actual = _day.PartB(data);
+        // Act
+        string actual = _day.PartB(data);
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-    */
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 }

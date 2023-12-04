@@ -1,12 +1,12 @@
 namespace AdventOfCode.Process.Tests;
 
-public class Challenge2Tests
+public class Day2Tests
 {
     private readonly IDataAccess _dataAccess;
     private readonly IDay _day;
     private readonly int _dayNumber;
 
-    public Challenge2Tests()
+    public Day2Tests()
     {
         _dataAccess = new DataAccess();
         _day = new Day2();
