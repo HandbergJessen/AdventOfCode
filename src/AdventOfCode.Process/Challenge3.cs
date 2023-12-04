@@ -33,7 +33,7 @@ public class Challenge3 : IChallenge
         return sum.ToString();
     }
 
-    public class Star
+    private class Star
     {
         private readonly int xStart;
         private readonly int yStart;
@@ -132,7 +132,7 @@ public class Challenge3 : IChallenge
         }
     }
 
-    public class Number
+    private class Number
     {
         private int xStart;
         private int yStart;

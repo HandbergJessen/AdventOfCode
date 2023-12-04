@@ -4,29 +4,29 @@ public class Challenge2 : IChallenge
 {
     public string PartA(string[] input)
     {
-        int value = 0;
+        int sum = 0;
 
         for (int i = 0; i < input.Length; i++)
         {
             if (ValidGame(input[i]))
             {
-                value += i + 1;
+                sum += i + 1;
             }
         }
 
-        return value.ToString();
+        return sum.ToString();
     }
 
     public string PartB(string[] input)
     {
-        int value = 0;
+        int sum = 0;
 
         foreach (string game in input)
         {
-            value += Power(game);
+            sum += Power(game);
         }
 
-        return value.ToString();
+        return sum.ToString();
     }
 
     private static bool ValidGame(string game)

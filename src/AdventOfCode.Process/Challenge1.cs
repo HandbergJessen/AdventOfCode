@@ -4,26 +4,26 @@ public class Challenge1 : IChallenge
 {
     public string PartA(string[] input)
     {
-        int value = 0;
+        int sum = 0;
 
         foreach (string line in input)
         {
-            value += GetValue(line);
+            sum += GetValue(line);
         }
 
-        return value.ToString();
+        return sum.ToString();
     }
 
     public string PartB(string[] input)
     {
-        int value = 0;
+        int sum = 0;
 
         foreach (string line in input)
         {
-            value += GetValue(Convert(line));
+            sum += GetValue(Convert(line));
         }
 
-        return value.ToString();
+        return sum.ToString();
     }
 
     private static int GetValue(string line)
