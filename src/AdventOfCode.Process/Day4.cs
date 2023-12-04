@@ -58,7 +58,7 @@ public class Day4 : IDay
     {
         List<int> numbers = new();
 
-        foreach (string value in line.Split(' '))
+        foreach (string value in line.Split(" "))
         {
             if (int.TryParse(value, out int number))
             {
