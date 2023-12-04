@@ -2,87 +2,87 @@ namespace AdventOfCode.Interface;
 
 public class Interface
 {
-    private static readonly Dictionary<string, IChallenge> challenges = new() {
-        { "1", new Challenge1() },
-        { "2", new Challenge2() },
-        { "3", new Challenge3() },
-        { "4", new Challenge4() },
-        { "5", new Challenge5() },
-        { "6", new Challenge6() },
-        { "7", new Challenge7() },
-        { "8", new Challenge8() },
-        { "9", new Challenge9() },
-        { "10", new Challenge10() },
-        { "11", new Challenge11() },
-        { "12", new Challenge12() },
-        { "13", new Challenge13() },
-        { "14", new Challenge14() },
-        { "15", new Challenge15() },
-        { "16", new Challenge16() },
-        { "17", new Challenge17() },
-        { "18", new Challenge18() },
-        { "19", new Challenge19() },
-        { "20", new Challenge20() },
-        { "21", new Challenge21() },
-        { "22", new Challenge22() },
-        { "23", new Challenge23() },
-        { "24", new Challenge24() },
-        { "25", new Challenge25() }
+    private static readonly Dictionary<string, IDay> days = new() {
+        { "1", new Day1() },
+        { "2", new Day2() },
+        { "3", new Day3() },
+        { "4", new Day4() },
+        { "5", new Day5() },
+        { "6", new Day6() },
+        { "7", new Day7() },
+        { "8", new Day8() },
+        { "9", new Day9() },
+        { "10", new Day10() },
+        { "11", new Day11() },
+        { "12", new Day12() },
+        { "13", new Day13() },
+        { "14", new Day14() },
+        { "15", new Day15() },
+        { "16", new Day16() },
+        { "17", new Day17() },
+        { "18", new Day18() },
+        { "19", new Day19() },
+        { "20", new Day20() },
+        { "21", new Day21() },
+        { "22", new Day22() },
+        { "23", new Day23() },
+        { "24", new Day24() },
+        { "25", new Day25() }
     };
 
     public static void Run(IDictionary<string, ValueObject> arguments)
     {
-        if (arguments["challenge"].IsTrue)
+        if (arguments["day"].IsTrue)
         {
             string user = arguments["<user>"].ToString();
-            string day = arguments["<day>"].ToString();
+            string dayNumber = arguments["<dayNumber>"].ToString();
 
             IDataAccess dataAccess = new DataAccess();
-            IChallenge? challenge = challenges.GetValueOrDefault($"{day}");
+            IDay? day = days.GetValueOrDefault($"{dayNumber}");
 
-            if (challenge != null)
+            if (day != null)
             {
-                string[] data = dataAccess.GetData($"../AdventOfCode.Data/data/{user}/{day}.txt");
+                string[] data = dataAccess.GetData($"../AdventOfCode.Data/data/{user}/{dayNumber}.txt");
 
                 Console.WriteLine();
                 Console.WriteLine($"User: {user}");
-                Console.WriteLine($"Challenge: {day}");
+                Console.WriteLine($"Day: {dayNumber}");
                 Console.WriteLine();
 
                 if (arguments["a"].IsTrue)
                 {
-                    PartA(challenge, data);
+                    PartA(day, data);
                 }
                 else if (arguments["b"].IsTrue)
                 {
-                    PartB(challenge, data);
+                    PartB(day, data);
                 }
                 else
                 {
-                    PartA(challenge, data);
-                    PartB(challenge, data);
+                    PartA(day, data);
+                    PartB(day, data);
                 }
             }
             else
             {
                 Console.WriteLine();
-                Console.WriteLine("The challenge you are trying to run does not exists!");
+                Console.WriteLine("The day you are trying to run does not exists!");
                 Console.WriteLine();
             }
         }
     }
 
-    private static void PartA(IChallenge challenge, string[] data)
+    private static void PartA(IDay day, string[] data)
     {
-        Console.WriteLine("Answer to part A.");
-        Console.WriteLine(challenge.PartA(data));
+        Console.WriteLine("Answer to part A:");
+        Console.WriteLine(day.PartA(data));
         Console.WriteLine();
     }
 
-    private static void PartB(IChallenge challenge, string[] data)
+    private static void PartB(IDay day, string[] data)
     {
-        Console.WriteLine("Answer to part B.");
-        Console.WriteLine(challenge.PartB(data));
+        Console.WriteLine("Answer to part B:");
+        Console.WriteLine(day.PartB(data));
         Console.WriteLine();
     }
 }

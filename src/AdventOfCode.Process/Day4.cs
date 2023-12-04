@@ -1,9 +1,6 @@
-
-using System.Dynamic;
-
 namespace AdventOfCode.Process;
 
-public class Challenge4 : IChallenge
+public class Day4 : IDay
 {
     public string PartA(string[] input)
     {

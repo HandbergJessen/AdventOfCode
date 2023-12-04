@@ -1,6 +1,6 @@
 namespace AdventOfCode.Process;
 
-public class Challenge11 : IChallenge
+public class Day14 : IDay
 {
     public string PartA(string[] input)
     {

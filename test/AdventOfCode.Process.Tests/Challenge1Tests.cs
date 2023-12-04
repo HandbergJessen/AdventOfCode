@@ -2,15 +2,15 @@ namespace AdventOfCode.Process.Tests;
 
 public class Challenge1Tests
 {
-    private readonly int _day;
-    private readonly IChallenge _challenge;
     private readonly IDataAccess _dataAccess;
+    private readonly IDay _day;
+    private readonly int _dayNumber;
 
     public Challenge1Tests()
     {
-        _day = 1;
-        _challenge = new Challenge1();
         _dataAccess = new DataAccess();
+        _day = new Day1();
+        _dayNumber = 1;
     }
 
     [Theory]
@@ -20,10 +20,10 @@ public class Challenge1Tests
     public void PartATests(string expected, string user)
     {
         // Arrange
-        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_day}.txt");
+        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_dayNumber}.txt");
 
         // Act
-        string actual = _challenge.PartA(data);
+        string actual = _day.PartA(data);
 
         // Assert
         Assert.Equal(expected, actual);
@@ -36,10 +36,10 @@ public class Challenge1Tests
     public void PartBTests(string expected, string user)
     {
         // Arrange
-        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_day}.txt");
+        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_dayNumber}.txt");
 
         // Act
-        string actual = _challenge.PartB(data);
+        string actual = _day.PartB(data);
 
         // Assert
         Assert.Equal(expected, actual);

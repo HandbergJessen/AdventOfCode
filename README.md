@@ -14,6 +14,6 @@ A christmas event - Solved with C#
 
 ## Running the project
 - Change directory to `AdventOfCode/src/AdventofCode.Interface`.  
-- Use `dotnet run challenge <user> <year> <day>`, to run both parts of a particular day.
-- Use `dotnet run challenge <user> <year> <day> a`, to run part a of a particular day.
-- Use `dotnet run challenge <user> <year> <day> b`, to run part b of a particular day.
+- Use `dotnet run day <user> <dayNumber>`, to run both parts of a particular day.
+- Use `dotnet run day <user> <dayNumber> a`, to run part a of a particular day.
+- Use `dotnet run day <user> <dayNumber> b`, to run part b of a particular day.
