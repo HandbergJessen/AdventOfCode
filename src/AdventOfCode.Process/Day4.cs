@@ -8,7 +8,12 @@ public class Day4 : IDay
 
         foreach (string line in input)
         {
-            sum += GetPoints(line);
+            int occurences = GetOcurrences(line);
+
+            if (occurences > 0)
+            {
+                sum += (int)Math.Pow(2, occurences - 1);
+            }
         }
 
         return sum.ToString();
@@ -17,82 +22,48 @@ public class Day4 : IDay
     public string PartB(string[] input)
     {
         Dictionary<int, int> cards = new();
-
         for (int i = 0; i < input.Length; i++)
         {
-            cards.Add(i, 1);
-        }
-
-        for (int i = 0; i < input.Length; i++)
-        {
-            int ocurrences = GetOcurrences(input[i]);
-            int count = cards[i];
-
-            for (int j = i + 1; j <= i + ocurrences; j++)
-            {
-                int cardAmount = cards[j];
-
-                cards[j] = cardAmount + count;
-            }
+            cards[i] = 1;
         }
 
         int sum = 0;
-
-        foreach (int value in cards.Values)
+        for (int i = 0; i < input.Length; i++)
         {
+            int occurences = GetOcurrences(input[i]);
+            int value = cards[i];
+
+            for (int j = i + 1; j <= i + occurences; j++)
+            {
+                cards[j] += value;
+            }
+
             sum += value;
         }
 
         return sum.ToString();
     }
 
-    private static int GetPoints(string line)
-    {
-        int winningOccurences = GetOcurrences(line);
-        if (winningOccurences == 0)
-        {
-            return winningOccurences;
-        }
-        else
-        {
-            return (int)Math.Pow(2, winningOccurences - 1);
-        }
-    }
-
     private static int GetOcurrences(string line)
     {
         string[] lineParts = line.Split(':', '|');
 
-        HashSet<int> winningNumbers = GetNumbers(lineParts[1]);
-        HashSet<int> myNumbers = GetNumbers(lineParts[2]);
+        List<int> winningNumbers = GetNumbers(lineParts[1]);
+        List<int> myNumbers = GetNumbers(lineParts[2]);
 
         return myNumbers.Intersect(winningNumbers).Count();
     }
 
-    private static HashSet<int> GetNumbers(string line)
+    private static List<int> GetNumbers(string line)
     {
-        HashSet<int> numbers = new();
+        List<int> numbers = new();
 
-        string number = "";
-        foreach (char character in line.ToCharArray())
+        foreach (string value in line.Split(' '))
         {
-            if (char.IsNumber(character))
+            if (int.TryParse(value, out int number))
             {
-                number += character;
+                numbers.Add(number);
             }
-            else
-            {
-                if (!number.Equals(""))
-                {
-                    numbers.Add(int.Parse(number));
-                    number = "";
-                }
-            }
-        }
-
-        if (!number.Equals(""))
-        {
-            numbers.Add(int.Parse(number));
         }
 
         return numbers;
