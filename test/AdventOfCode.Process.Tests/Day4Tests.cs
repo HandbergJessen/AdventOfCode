@@ -30,6 +30,7 @@ public class Day4Tests
 
     [Theory]
     [InlineData("30", "test")]
+    [InlineData("6189740", "patrick")]
     public void PartBTests(string expected, string user)
     {
         // Arrange

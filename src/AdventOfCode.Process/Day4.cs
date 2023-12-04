@@ -8,7 +8,7 @@ public class Day4 : IDay
 
         foreach (string line in input)
         {
-            sum += GetWorth(line);
+            sum += GetPoints(line);
         }
 
         return sum.ToString();
@@ -16,17 +16,39 @@ public class Day4 : IDay
 
     public string PartB(string[] input)
     {
-        return "Not finished!";
+        Dictionary<int, int> cards = new();
+
+        for (int i = 0; i < input.Length; i++)
+        {
+            cards.Add(i, 1);
+        }
+
+        for (int i = 0; i < input.Length; i++)
+        {
+            int ocurrences = GetOcurrences(input[i]);
+            int count = cards[i];
+
+            for (int j = i + 1; j <= i + ocurrences; j++)
+            {
+                int cardAmount = cards[j];
+
+                cards[j] = cardAmount + count;
+            }
+        }
+
+        int sum = 0;
+
+        foreach (int value in cards.Values)
+        {
+            sum += value;
+        }
+
+        return sum.ToString();
     }
 
-    private static int GetWorth(string line)
+    private static int GetPoints(string line)
     {
-        string[] lineParts = line.Split(':', '|');
-
-        HashSet<int> winningNumbers = GetNumbers(lineParts[1]);
-        HashSet<int> myNumbers = GetNumbers(lineParts[2]);
-
-        int winningOccurences = myNumbers.Intersect(winningNumbers).Count();
+        int winningOccurences = GetOcurrences(line);
         if (winningOccurences == 0)
         {
             return winningOccurences;
@@ -35,6 +57,16 @@ public class Day4 : IDay
         {
             return (int)Math.Pow(2, winningOccurences - 1);
         }
+    }
+
+    private static int GetOcurrences(string line)
+    {
+        string[] lineParts = line.Split(':', '|');
+
+        HashSet<int> winningNumbers = GetNumbers(lineParts[1]);
+        HashSet<int> myNumbers = GetNumbers(lineParts[2]);
+
+        return myNumbers.Intersect(winningNumbers).Count();
     }
 
     private static HashSet<int> GetNumbers(string line)
