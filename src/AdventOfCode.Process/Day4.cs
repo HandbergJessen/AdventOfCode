@@ -8,11 +8,11 @@ public class Day4 : IDay
 
         foreach (string line in input)
         {
-            int occurences = GetOcurrences(line);
+            int matches = GetMatch(line);
 
-            if (occurences > 0)
+            if (matches > 0)
             {
-                sum += (int)Math.Pow(2, occurences - 1);
+                sum += (int)Math.Pow(2, matches - 1);
             }
         }
 
@@ -30,10 +30,10 @@ public class Day4 : IDay
         int sum = 0;
         for (int i = 0; i < input.Length; i++)
         {
-            int occurences = GetOcurrences(input[i]);
+            int matches = GetMatch(input[i]);
             int value = cards[i];
 
-            for (int j = i + 1; j <= i + occurences; j++)
+            for (int j = i + 1; j <= i + matches; j++)
             {
                 cards[j] += value;
             }
@@ -44,7 +44,7 @@ public class Day4 : IDay
         return sum.ToString();
     }
 
-    private static int GetOcurrences(string line)
+    private static int GetMatch(string line)
     {
         string[] lineParts = line.Split(':', '|');
 
