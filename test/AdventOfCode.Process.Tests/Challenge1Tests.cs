@@ -14,13 +14,13 @@ public class Challenge1Tests
     }
 
     [Theory]
-    [InlineData("351", "test", "2023")]
-    [InlineData("55386", "patrick", "2023")]
-    [InlineData("53386", "brian", "2023")]
-    public void PartATests(string expected, string user, string year)
+    [InlineData("351", "test")]
+    [InlineData("55386", "patrick")]
+    [InlineData("53386", "brian")]
+    public void PartATests(string expected, string user)
     {
         // Arrange
-        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{year}-{_day}.txt");
+        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_day}.txt");
 
         // Act
         string actual = _challenge.PartA(data);
@@ -30,13 +30,13 @@ public class Challenge1Tests
     }
 
     [Theory]
-    [InlineData("423", "test", "2023")]
-    [InlineData("54824", "patrick", "2023")]
-    [InlineData("53312", "brian", "2023")]
-    public void PartBTests(string expected, string user, string year)
+    [InlineData("423", "test")]
+    [InlineData("54824", "patrick")]
+    [InlineData("53312", "brian")]
+    public void PartBTests(string expected, string user)
     {
         // Arrange
-        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{year}-{_day}.txt");
+        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_day}.txt");
 
         // Act
         string actual = _challenge.PartB(data);

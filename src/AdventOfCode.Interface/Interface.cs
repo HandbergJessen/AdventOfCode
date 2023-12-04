@@ -3,31 +3,31 @@ namespace AdventOfCode.Interface;
 public class Interface
 {
     private static readonly Dictionary<string, IChallenge> challenges = new() {
-        { "2023-1", new Challenge1() },
-        { "2023-2", new Challenge2() },
-        { "2023-3", new Challenge3() },
-        { "2023-4", new Challenge4() },
-        { "2023-5", new Challenge5() },
-        { "2023-6", new Challenge6() },
-        { "2023-7", new Challenge7() },
-        { "2023-8", new Challenge8() },
-        { "2023-9", new Challenge9() },
-        { "2023-10", new Challenge10() },
-        { "2023-11", new Challenge11() },
-        { "2023-12", new Challenge12() },
-        { "2023-13", new Challenge13() },
-        { "2023-14", new Challenge14() },
-        { "2023-15", new Challenge15() },
-        { "2023-16", new Challenge16() },
-        { "2023-17", new Challenge17() },
-        { "2023-18", new Challenge18() },
-        { "2023-19", new Challenge19() },
-        { "2023-20", new Challenge20() },
-        { "2023-21", new Challenge21() },
-        { "2023-22", new Challenge22() },
-        { "2023-23", new Challenge23() },
-        { "2023-24", new Challenge24() },
-        { "2023-25", new Challenge25() }
+        { "1", new Challenge1() },
+        { "2", new Challenge2() },
+        { "3", new Challenge3() },
+        { "4", new Challenge4() },
+        { "5", new Challenge5() },
+        { "6", new Challenge6() },
+        { "7", new Challenge7() },
+        { "8", new Challenge8() },
+        { "9", new Challenge9() },
+        { "10", new Challenge10() },
+        { "11", new Challenge11() },
+        { "12", new Challenge12() },
+        { "13", new Challenge13() },
+        { "14", new Challenge14() },
+        { "15", new Challenge15() },
+        { "16", new Challenge16() },
+        { "17", new Challenge17() },
+        { "18", new Challenge18() },
+        { "19", new Challenge19() },
+        { "20", new Challenge20() },
+        { "21", new Challenge21() },
+        { "22", new Challenge22() },
+        { "23", new Challenge23() },
+        { "24", new Challenge24() },
+        { "25", new Challenge25() }
     };
 
     public static void Run(IDictionary<string, ValueObject> arguments)
@@ -35,19 +35,18 @@ public class Interface
         if (arguments["challenge"].IsTrue)
         {
             string user = arguments["<user>"].ToString();
-            string year = arguments["<year>"].ToString();
             string day = arguments["<day>"].ToString();
 
             IDataAccess dataAccess = new DataAccess();
-            IChallenge? challenge = challenges.GetValueOrDefault($"{year}-{day}");
+            IChallenge? challenge = challenges.GetValueOrDefault($"{day}");
 
             if (challenge != null)
             {
-                string[] data = dataAccess.GetData($"../AdventOfCode.Data/data/{user}/{year}-{day}.txt");
+                string[] data = dataAccess.GetData($"../AdventOfCode.Data/data/{user}/{day}.txt");
 
                 Console.WriteLine();
                 Console.WriteLine($"User: {user}");
-                Console.WriteLine($"Challenge: {year}-{day}");
+                Console.WriteLine($"Challenge: {day}");
                 Console.WriteLine();
 
                 if (arguments["a"].IsTrue)
