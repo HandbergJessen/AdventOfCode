@@ -16,6 +16,7 @@ public class Day4Tests
     [Theory]
     [InlineData("13", "test")]
     [InlineData("15205", "patrick")]
+    [InlineData("28538", "brian")]
     public void PartATests(string expected, string user)
     {
         // Arrange
@@ -31,6 +32,7 @@ public class Day4Tests
     [Theory]
     [InlineData("30", "test")]
     [InlineData("6189740", "patrick")]
+    [InlineData("9425061", "brian")]
     public void PartBTests(string expected, string user)
     {
         // Arrange
