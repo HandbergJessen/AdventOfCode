@@ -475,3 +475,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Project Folders
+src/AdventOfCode.Data/patrick
+src/AdventOfCode.Data/brian
