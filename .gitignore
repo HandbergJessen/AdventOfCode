@@ -477,5 +477,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # Project Folders
-src/AdventOfCode.Data/patrick
-src/AdventOfCode.Data/brian
+src/AdventOfCode.Data/data/patrick
+src/AdventOfCode.Data/data/brian

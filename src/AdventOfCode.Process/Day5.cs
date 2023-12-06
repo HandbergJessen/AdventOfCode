@@ -4,7 +4,7 @@ public class Day5 : IDay
 {
     public string PartA(string[] input)
     {
-        List<long> seeds = GetNumbers(input[0]);
+        List<long> seeds = Utilities.LineToLongs(input[0]);
         List<Transformer> transformers = GetTransformers(input);
 
         long lowestValue = long.MaxValue;
@@ -28,7 +28,7 @@ public class Day5 : IDay
 
     public string PartB(string[] input)
     {
-        List<long> seeds = GetNumbers(input[0]);
+        List<long> seeds = Utilities.LineToLongs(input[0]);
         List<Transformer> transformers = GetTransformers(input);
 
         long lowestValue = long.MaxValue;
@@ -128,7 +128,7 @@ public class Day5 : IDay
             }
             else if (!input[i].Equals(""))
             {
-                List<long> values = GetNumbers(input[i]);
+                List<long> values = Utilities.LineToLongs(input[i]);
                 currentTransformer.AddRange(new Range(values[0], values[1], values[2]));
             }
         }
@@ -136,20 +136,5 @@ public class Day5 : IDay
         transformers.Add(currentTransformer);
 
         return transformers;
-    }
-
-    private static List<long> GetNumbers(string line)
-    {
-        List<long> numbers = new();
-
-        foreach (string value in line.Split(" "))
-        {
-            if (long.TryParse(value, out long number))
-            {
-                numbers.Add(number);
-            }
-        }
-
-        return numbers;
     }
 }

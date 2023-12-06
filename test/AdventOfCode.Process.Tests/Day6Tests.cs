@@ -32,7 +32,7 @@ public class Day6Tests
     {
         // Arrange
         string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/test/{_dayNumber}.txt");
-        string expected = "Not finished!";
+        string expected = "71503";
 
         // Act
         string actual = _day.PartB(data);

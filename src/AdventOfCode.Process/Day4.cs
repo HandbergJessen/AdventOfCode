@@ -48,24 +48,9 @@ public class Day4 : IDay
     {
         string[] lineParts = line.Split(':', '|');
 
-        List<int> winningNumbers = GetNumbers(lineParts[1]);
-        List<int> myNumbers = GetNumbers(lineParts[2]);
+        List<int> winningNumbers = Utilities.LineToInts(lineParts[1]);
+        List<int> myNumbers = Utilities.LineToInts(lineParts[2]);
 
         return myNumbers.Intersect(winningNumbers).Count();
-    }
-
-    private static List<int> GetNumbers(string line)
-    {
-        List<int> numbers = new();
-
-        foreach (string value in line.Split(" "))
-        {
-            if (int.TryParse(value, out int number))
-            {
-                numbers.Add(number);
-            }
-        }
-
-        return numbers;
     }
 }
