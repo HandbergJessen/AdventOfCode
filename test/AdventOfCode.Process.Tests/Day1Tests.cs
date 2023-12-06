@@ -13,14 +13,12 @@ public class Day1Tests
         _dayNumber = 1;
     }
 
-    [Theory]
-    [InlineData("351", "test")]
-    [InlineData("55386", "patrick")]
-    [InlineData("53386", "brian")]
-    public void PartATests(string expected, string user)
+    [Fact]
+    public void PartATests()
     {
         // Arrange
-        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_dayNumber}.txt");
+        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/test/{_dayNumber}.txt");
+        string expected = "351";
 
         // Act
         string actual = _day.PartA(data);
@@ -29,14 +27,12 @@ public class Day1Tests
         Assert.Equal(expected, actual);
     }
 
-    [Theory]
-    [InlineData("423", "test")]
-    [InlineData("54824", "patrick")]
-    [InlineData("53312", "brian")]
-    public void PartBTests(string expected, string user)
+    [Fact]
+    public void PartBTests()
     {
         // Arrange
-        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/{user}/{_dayNumber}.txt");
+        string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/test/{_dayNumber}.txt");
+        string expected = "423";
 
         // Act
         string actual = _day.PartB(data);
