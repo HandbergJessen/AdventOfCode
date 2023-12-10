@@ -4,7 +4,7 @@ public class Day3 : IDay
 {
     public string PartA(string[] input)
     {
-        char[][] grid = GenerateGrid(input);
+        char[][] grid = Utilities.GenerateGrid(input);
         List<Number> numbers = GenerateNumbers(grid);
 
         int sum = 0;
@@ -21,7 +21,7 @@ public class Day3 : IDay
 
     public string PartB(string[] input)
     {
-        char[][] grid = GenerateGrid(input);
+        char[][] grid = Utilities.GenerateGrid(input);
         List<Star> stars = GenerateStars(grid);
 
         int sum = 0;
@@ -196,17 +196,6 @@ public class Day3 : IDay
         }
     }
 
-    private static char[][] GenerateGrid(string[] data)
-    {
-        char[][] grid = new char[data.Length][];
-
-        for (int y = 0; y < data.Length; y++)
-        {
-            grid[y] = data[y].ToCharArray();
-        }
-
-        return grid;
-    }
 
     private static List<Number> GenerateNumbers(char[][] grid)
     {

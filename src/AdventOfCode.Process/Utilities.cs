@@ -2,6 +2,18 @@ namespace AdventOfCode.Process;
 
 public class Utilities
 {
+
+    public static char[][] GenerateGrid(string[] data)
+    {
+        char[][] grid = new char[data.Length][];
+
+        for (int y = 0; y < data.Length; y++)
+        {
+            grid[y] = data[y].ToCharArray();
+        }
+
+        return grid;
+    }
     public static List<int> LineToInts(string line)
     {
         List<int> numbers = new();
