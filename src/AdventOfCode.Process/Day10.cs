@@ -1,3 +1,5 @@
+using System.Transactions;
+
 namespace AdventOfCode.Process;
 
 public class Day10 : IDay
@@ -31,16 +33,118 @@ public class Day10 : IDay
             }
         }
 
+        foreach (Pipe pipe in grid)
+        {
+            if (pipe.Visual != '.')
+            {
+                FindOutsideAndInside(grid, pipe);
+                break;
+            }
+        }
+
         for (int y = 0; y < grid.GetLength(0); y++)
         {
             for (int x = 0; x < grid.GetLength(1); x++)
             {
                 Console.Write(grid[y, x].Visual);
             }
+
             Console.WriteLine();
         }
 
         return "";
+    }
+
+    private static void CheckOutside(Pipe[,] grid, Pipe currentPipe, Direction outsideDirection)
+    {
+        int x = currentPipe.X;
+        int y = currentPipe.Y;
+
+        switch (outsideDirection)
+        {
+            case Direction.North: y--; break;
+            case Direction.South: y++; break;
+            case Direction.East: x++; break;
+            case Direction.West: x--; break;
+        }
+
+        if (y < 0 | x < 0 | y > grid.GetLength(0) | x > grid.GetLength(1))
+        {
+            return;
+        }
+
+        if (grid[y, x].Visual == '.')
+        {
+            grid[y, x].Visual = 'O';
+        }
+    }
+
+    private static void CheckInside(Pipe[,] grid, Pipe currentPipe, Direction outsideDirection)
+    {
+        int x = currentPipe.X;
+        int y = currentPipe.Y;
+
+        switch (outsideDirection)
+        {
+            case Direction.North: y--; break;
+            case Direction.South: y++; break;
+            case Direction.East: x++; break;
+            case Direction.West: x--; break;
+        }
+
+        if (y < 0 | x < 0 | y > grid.GetLength(0) | x > grid.GetLength(1))
+        {
+            return;
+        }
+
+        if (grid[y, x].Visual == '.')
+        {
+            grid[y, x].Visual = 'I';
+        }
+    }
+
+    private static void FindOutsideAndInside(Pipe[,] grid, Pipe outsidePipe)
+    {
+        Pipe currentPipe = outsidePipe;
+        Direction currentDirection = Direction.East;
+        Direction outsideDirection = Direction.West;
+        Direction insideDirection = Direction.East;
+
+        int startX = currentPipe.X;
+        int startY = currentPipe.Y;
+
+        do
+        {
+            CheckOutside(grid, currentPipe, outsideDirection);
+            CheckInside(grid, currentPipe, insideDirection);
+
+            switch (currentDirection)
+            {
+                case Direction.North: outsideDirection = Direction.West; break;
+                case Direction.South: outsideDirection = Direction.East; break;
+                case Direction.East: outsideDirection = Direction.North; break;
+                case Direction.West: outsideDirection = Direction.South; break;
+            }
+
+            insideDirection = ReverseDirection(outsideDirection);
+
+            CheckOutside(grid, currentPipe, outsideDirection);
+            CheckInside(grid, currentPipe, insideDirection);
+
+            int x = currentPipe.X;
+            int y = currentPipe.Y;
+
+            switch (currentDirection)
+            {
+                case Direction.North: y--; break;
+                case Direction.South: y++; break;
+                case Direction.East: x++; break;
+                case Direction.West: x--; break;
+            }
+
+            currentPipe = grid[y, x];
+            currentDirection = currentPipe.GetOutputDirection(currentDirection);
+        } while (currentPipe.X != startX && currentPipe.Y != startY);
     }
 
     private static List<Pipe> GetLoop(Pipe[,] grid, Pipe startPipe)
