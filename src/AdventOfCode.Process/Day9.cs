@@ -1,5 +1,3 @@
-using System.Xml.Schema;
-
 namespace AdventOfCode.Process;
 
 public class Day9 : IDay
