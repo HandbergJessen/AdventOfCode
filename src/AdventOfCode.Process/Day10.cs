@@ -46,7 +46,16 @@ public class Day10 : IDay
         {
             for (int x = 0; x < grid.GetLength(1); x++)
             {
-                Console.Write(grid[y, x].Visual);
+                char visual = grid[y, x].Visual;
+
+                if (visual != 'I' | visual != 'O')
+                {
+                    Console.Write(' ');
+                }
+                else
+                {
+                    Console.Write(visual);
+                }
             }
 
             Console.WriteLine();
@@ -68,7 +77,7 @@ public class Day10 : IDay
             case Direction.West: x--; break;
         }
 
-        if (y < 0 | x < 0 | y > grid.GetLength(0) | x > grid.GetLength(1))
+        if (y < 0 | x < 0 | y > grid.GetLength(0) - 1 | x > grid.GetLength(1) - 1)
         {
             return;
         }
@@ -92,7 +101,7 @@ public class Day10 : IDay
             case Direction.West: x--; break;
         }
 
-        if (y < 0 | x < 0 | y > grid.GetLength(0) | x > grid.GetLength(1))
+        if (y < 0 | x < 0 | y > grid.GetLength(0) - 1 | x > grid.GetLength(1) - 1)
         {
             return;
         }
@@ -144,7 +153,7 @@ public class Day10 : IDay
 
             currentPipe = grid[y, x];
             currentDirection = currentPipe.GetOutputDirection(currentDirection);
-        } while (currentPipe.X != startX && currentPipe.Y != startY);
+        } while (currentPipe.X != startX || currentPipe.Y != startY);
     }
 
     private static List<Pipe> GetLoop(Pipe[,] grid, Pipe startPipe)
