@@ -95,6 +95,5 @@ public class Day9 : IDay
         }
 
         return totalHistoryValue.ToString();
-
     }
 }

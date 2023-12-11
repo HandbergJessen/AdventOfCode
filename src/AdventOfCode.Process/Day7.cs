@@ -44,7 +44,7 @@ public class Day7 : IDay
         return winnings.ToString();
     }
 
-    public class Hand : IComparable<Hand>
+    private class Hand : IComparable<Hand>
     {
         public List<int> HandValues { get; private set; }
         public int HandScore { get; private set; }
