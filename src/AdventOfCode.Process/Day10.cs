@@ -31,6 +31,7 @@ public class Day10 : IDay
         return moves.ToString();
 
     }
+
     public string PartB(string[] input)
     {
         return "Not finished!";
