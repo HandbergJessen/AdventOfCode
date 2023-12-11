@@ -1,5 +1,3 @@
-using System.Transactions;
-
 namespace AdventOfCode.Process;
 
 public class Day10 : IDay
@@ -46,22 +44,58 @@ public class Day10 : IDay
         {
             for (int x = 0; x < grid.GetLength(1); x++)
             {
+                if ((x == 0 || y == 0 || x == grid.GetLength(1) - 1 || y == grid.GetLength(0) - 1) && grid[y, x].Visual == '.')
+                {
+                    grid[y, x].Visual = 'O';
+                    continue;
+                }
+
+                if (grid[y, x].Visual == '.')
+                {
+                    if (grid[y, x - 1].Visual == 'O' || grid[y, x + 1].Visual == 'O' || grid[y - 1, x].Visual == 'O' || grid[y + 1, x].Visual == 'O')
+                    {
+                        grid[y, x].Visual = 'O';
+                        continue;
+                    }
+
+                    if (grid[y, x - 1].Visual == 'I' || grid[y, x + 1].Visual == 'I' || grid[y - 1, x].Visual == 'I' || grid[y + 1, x].Visual == 'I')
+                    {
+                        grid[y, x].Visual = 'I';
+                    }
+                }
+            }
+        }
+        int countInside = 0;
+        foreach (Pipe pipe in grid)
+        {
+            if (pipe.Visual == 'I')
+            {
+                countInside++;
+            }
+        }
+
+        for (int y = 0; y < grid.GetLength(0); y++)
+        {
+            for (int x = 0; x < grid.GetLength(1); x++)
+            {
                 char visual = grid[y, x].Visual;
 
-                if (visual != 'I' | visual != 'O')
+                if (visual == 'I' || visual == 'O' || visual == '.' || visual == 'S')
                 {
-                    Console.Write(' ');
+                    Console.Write(visual);
+
                 }
                 else
                 {
-                    Console.Write(visual);
+                    Console.Write(' ');
+
                 }
             }
 
             Console.WriteLine();
         }
 
-        return "";
+        return countInside.ToString();
     }
 
     private static void CheckOutside(Pipe[,] grid, Pipe currentPipe, Direction outsideDirection)
@@ -247,28 +281,38 @@ public class Day10 : IDay
         if (northPipe.DirectionMatch(Direction.North))
         {
             startPipe.Direction1 = Direction.North;
-            return;
         }
 
         Pipe southPipe = grid[y + 1, x];
         if (southPipe.DirectionMatch(Direction.South))
         {
-            startPipe.Direction1 = Direction.South;
-            return;
+            if (startPipe.Direction1 == 0)
+            {
+                startPipe.Direction1 = Direction.South;
+            }
+            else
+            {
+                startPipe.Direction2 = Direction.South;
+            }
         }
 
         Pipe eastPipe = grid[y, x + 1];
         if (eastPipe.DirectionMatch(Direction.East))
         {
-            startPipe.Direction1 = Direction.East;
-            return;
+            if (startPipe.Direction1 == 0)
+            {
+                startPipe.Direction1 = Direction.East;
+            }
+            else
+            {
+                startPipe.Direction2 = Direction.East;
+            }
         }
 
         Pipe westPipe = grid[y, x - 1];
         if (westPipe.DirectionMatch(Direction.West))
         {
-            startPipe.Direction1 = Direction.West;
-            return;
+            startPipe.Direction2 = Direction.West;
         }
     }
 
