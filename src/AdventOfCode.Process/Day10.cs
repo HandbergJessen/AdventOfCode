@@ -4,109 +4,216 @@ public class Day10 : IDay
 {
     public string PartA(string[] input)
     {
-        char[][] grid = Utilities.GenerateGrid(input);
-        var (y, x, pipe, direction) = GetStartDirection(grid);
-        int moves = 1;
+        Pipe[,] grid = GenerateGrid(input);
+        Pipe startPipe = FindStartPipe(grid);
 
-        while (pipe != 'S')
-        {
+        SetStartPipeDirections(grid, startPipe);
 
-            switch (direction)
-            {
-                case 'N': y--; break;
-                case 'S': y++; break;
-                case 'W': x--; break;
-                case 'E': x++; break;
-                default: break;
+        List<Pipe> pipes = GetLoop(grid, startPipe);
 
-            }
-            pipe = grid[y][x];
-
-            direction = GetDirection(pipe, direction);
-            moves++;
-        }
-        if (moves % 2 == 0) moves /= 2;
-        else moves = moves / 2 + 1;
-
-        return moves.ToString();
-
+        return (pipes.Count % 2 == 0 ? pipes.Count / 2 : pipes.Count / 2 + 1).ToString();
     }
 
     public string PartB(string[] input)
     {
-        return "Not finished!";
+        Pipe[,] grid = GenerateGrid(input);
+        Pipe startPipe = FindStartPipe(grid);
+
+        SetStartPipeDirections(grid, startPipe);
+
+        List<Pipe> pipes = GetLoop(grid, startPipe);
+
+        for (int y = 0; y < grid.GetLength(0); y++)
+        {
+            for (int x = 0; x < grid.GetLength(1); x++)
+            {
+                grid[y, x] = GetNewPipe(x, y, pipes);
+            }
+        }
+
+        for (int y = 0; y < grid.GetLength(0); y++)
+        {
+            for (int x = 0; x < grid.GetLength(1); x++)
+            {
+                Console.Write(grid[y, x].Visual);
+            }
+            Console.WriteLine();
+        }
+
+        return "";
     }
 
-
-    private static (int y, int x, char pipe, char direction) GetStartDirection(char[][] grid)
+    private static List<Pipe> GetLoop(Pipe[,] grid, Pipe startPipe)
     {
-        for (int y = 0; y < grid.Length; y++)
+        Pipe currentPipe = startPipe;
+        Direction currentDirection = currentPipe.Direction1;
+        List<Pipe> pipes = new();
+
+        do
         {
-            char[] row = grid[y];
+            pipes.Add(currentPipe);
+
+            int x = currentPipe.X;
+            int y = currentPipe.Y;
+
+            switch (currentDirection)
+            {
+                case Direction.North: y--; break;
+                case Direction.South: y++; break;
+                case Direction.East: x++; break;
+                case Direction.West: x--; break;
+            }
+
+            currentPipe = grid[y, x];
+            currentDirection = currentPipe.GetOutputDirection(currentDirection);
+        } while (currentPipe.Visual != 'S');
+
+        return pipes;
+    }
+
+    private static Pipe GetNewPipe(int x, int y, List<Pipe> pipes)
+    {
+        foreach (Pipe pipe in pipes)
+        {
+            if (x == pipe.X && y == pipe.Y)
+            {
+                return pipe;
+            }
+        }
+
+        return new Pipe(x, y, '.');
+    }
+
+    private static Pipe[,] GenerateGrid(string[] input)
+    {
+        Pipe[,] grid = new Pipe[input[0].Length, input.Length];
+
+        for (int y = 0; y < input.Length; y++)
+        {
+            string row = input[y];
 
             for (int x = 0; x < row.Length; x++)
             {
-                if (grid[y][x] == 'S')  // Start pipe
+                char pipe = row[x];
+
+                grid[y, x] = pipe switch
                 {
-                    char nextPipe = grid[y - 1][x];
-                    char direction = GetDirection(nextPipe, 'N');
-                    if (direction != 'G') return (y - 1, x, nextPipe, direction); // North is valid
-
-                    nextPipe = grid[y + 1][x];
-                    direction = GetDirection(nextPipe, 'S');
-                    if (direction != 'G') return (y + 1, x, nextPipe, direction); // South is valid
-
-                    nextPipe = grid[y][x - 1];
-                    direction = GetDirection(nextPipe, 'W');
-                    if (direction != 'G') return (y, x - 1, nextPipe, direction); // West is valid
-
-                    nextPipe = grid[y][x + 1];
-                    direction = GetDirection(nextPipe, 'E');
-                    if (direction != 'G') return (y, x + 1, nextPipe, direction); // East is valid
-
-                }
+                    '|' => new Pipe(x, y, pipe, Direction.North, Direction.South),
+                    '-' => new Pipe(x, y, pipe, Direction.East, Direction.West),
+                    'F' => new Pipe(x, y, pipe, Direction.South, Direction.East),
+                    '7' => new Pipe(x, y, pipe, Direction.South, Direction.West),
+                    'J' => new Pipe(x, y, pipe, Direction.North, Direction.West),
+                    'L' => new Pipe(x, y, pipe, Direction.North, Direction.East),
+                    _ => new Pipe(x, y, pipe),
+                };
             }
         }
-        return (0, 0, ' ', ' ');
+
+        return grid;
     }
 
-
-    private static char GetDirection(char pipe, char direction)
+    private static Pipe FindStartPipe(Pipe[,] grid)
     {
-        char outDirection;
-        if (pipe == 'S')
+        foreach (Pipe pipe in grid)
         {
-            outDirection = '0';
-        }
-        else
-        {
-            if (direction == 'N') direction = 'S';
-            else if (direction == 'S') direction = 'N';
-            else if (direction == 'E') direction = 'W';
-            else if (direction == 'W') direction = 'E';
-
-            var outDir = (pipe, direction)
-            switch
+            if (pipe.Visual == 'S')
             {
-                ('|', 'S') => 'N',
-                ('|', 'N') => 'S',
-                ('-', 'W') => 'E',
-                ('-', 'E') => 'W',
-                ('F', 'S') => 'E',
-                ('F', 'E') => 'S',
-                ('7', 'S') => 'W',
-                ('7', 'W') => 'S',
-                ('J', 'N') => 'W',
-                ('J', 'W') => 'N',
-                ('L', 'N') => 'E',
-                ('L', 'E') => 'N',
-                _ => 'G',
-            };
-
-
-            outDirection = outDir;
+                return pipe;
+            }
         }
 
-        return outDirection;
+        throw new Exception();
+    }
+
+    private static void SetStartPipeDirections(Pipe[,] grid, Pipe startPipe)
+    {
+        int x = startPipe.X;
+        int y = startPipe.Y;
+
+        Pipe northPipe = grid[y - 1, x];
+        if (northPipe.DirectionMatch(Direction.North))
+        {
+            startPipe.Direction1 = Direction.North;
+            return;
+        }
+
+        Pipe southPipe = grid[y + 1, x];
+        if (southPipe.DirectionMatch(Direction.South))
+        {
+            startPipe.Direction1 = Direction.South;
+            return;
+        }
+
+        Pipe eastPipe = grid[y, x + 1];
+        if (eastPipe.DirectionMatch(Direction.East))
+        {
+            startPipe.Direction1 = Direction.East;
+            return;
+        }
+
+        Pipe westPipe = grid[y, x - 1];
+        if (westPipe.DirectionMatch(Direction.West))
+        {
+            startPipe.Direction1 = Direction.West;
+            return;
+        }
+    }
+
+    private enum Direction
+    {
+        North = 1,
+        South = -1,
+        East = 2,
+        West = -2
+    }
+
+    private static Direction ReverseDirection(Direction direction)
+    {
+        return (Direction)((int)direction * -1);
+    }
+
+    private class Pipe
+    {
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public char Visual { get; set; }
+        public Direction Direction1 { get; set; }
+        public Direction Direction2 { get; set; }
+
+        public Pipe(int x, int y, char visual)
+        {
+            X = x;
+            Y = y;
+            Visual = visual;
+        }
+
+        public Pipe(int x, int y, char visual, Direction direction1, Direction direction2)
+        {
+            X = x;
+            Y = y;
+            Visual = visual;
+            Direction1 = direction1;
+            Direction2 = direction2;
+        }
+
+        public bool DirectionMatch(Direction inputDirection)
+        {
+            Direction reverseDirection = ReverseDirection(inputDirection);
+            return reverseDirection == Direction1 || reverseDirection == Direction2;
+        }
+
+        public Direction GetOutputDirection(Direction inputDirection)
+        {
+            Direction reverseDirection = ReverseDirection(inputDirection);
+
+            if (reverseDirection == Direction1)
+            {
+                return Direction2;
+            }
+            else
+            {
+                return Direction1;
+            }
+        }
     }
 }
