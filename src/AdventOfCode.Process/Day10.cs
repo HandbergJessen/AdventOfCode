@@ -1,5 +1,3 @@
-using System.Transactions;
-
 namespace AdventOfCode.Process;
 
 public class Day10 : IDay

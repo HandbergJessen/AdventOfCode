@@ -18,7 +18,7 @@ public class Utilities
     {
         List<int> numbers = new();
 
-        foreach (string value in line.Split(" "))
+        foreach (string value in line.Split(' ', ','))
         {
             if (int.TryParse(value, out int number))
             {
