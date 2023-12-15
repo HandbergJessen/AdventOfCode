@@ -9,10 +9,11 @@ public class Day12 : IDay
         {
             string[] lineDetails = line.Split(' ');
 
-            Console.WriteLine($"{lineDetails[0]}, {lineDetails[1]}");
+            int single = GetTotalArrangements(lineDetails[0], lineDetails[1]);
 
-            arrangements += GetTotalArrangements(lineDetails[0], lineDetails[1]);
-            Console.WriteLine();
+            Console.WriteLine($"{lineDetails[0]}, {lineDetails[1]}, {single}");
+
+            arrangements += single;
         }
 
         return arrangements.ToString();
@@ -20,7 +21,19 @@ public class Day12 : IDay
 
     public string PartB(string[] input)
     {
-        return "Not finished!";
+        int arrangements = 0;
+        foreach (string line in input)
+        {
+            string[] lineDetails = line.Split(' ');
+
+            int single = GetTotalArrangements(lineDetails[0] + "?" + lineDetails[0] + "?" + lineDetails[0] + "?" + lineDetails[0] + "?" + lineDetails[0], lineDetails[1] + "," + lineDetails[1] + "," + lineDetails[1] + "," + lineDetails[1] + "," + lineDetails[1]);
+
+            Console.WriteLine($"{lineDetails[0] + "?" + lineDetails[0] + "?" + lineDetails[0] + "?" + lineDetails[0] + "?" + lineDetails[0]}, {lineDetails[1] + "," + lineDetails[1] + "," + lineDetails[1] + "," + lineDetails[1] + "," + lineDetails[1]}, {single}");
+
+            arrangements += single;
+        }
+
+        return arrangements.ToString();
     }
 
     private static int GetTotalArrangements(string condition, string groupCollection)
@@ -35,14 +48,12 @@ public class Day12 : IDay
             totalDamaged += group;
         }
 
-        List<string> arrangements = GetArrangements(condition, groups, currentDamaged, totalDamaged, 0);
-
-        Console.WriteLine();
-
-        foreach (string arrangement in arrangements)
+        if (currentDamaged == totalDamaged)
         {
-            Console.WriteLine(arrangement);
+            return 1;
         }
+
+        List<string> arrangements = GetArrangements(condition, groups, currentDamaged, totalDamaged, 0);
 
         return arrangements.Count;
     }
