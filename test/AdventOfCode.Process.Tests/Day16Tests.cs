@@ -1,16 +1,16 @@
 namespace AdventOfCode.Process.Tests;
 
-public class Day15Tests
+public class Day16Tests
 {
     private readonly IDataAccess _dataAccess;
     private readonly IDay _day;
     private readonly int _dayNumber;
 
-    public Day15Tests()
+    public Day16Tests()
     {
         _dataAccess = new DataAccess();
-        _day = new Day15();
-        _dayNumber = 15;
+        _day = new Day16();
+        _dayNumber = 16;
     }
 
     [Fact]
@@ -18,7 +18,7 @@ public class Day15Tests
     {
         // Arrange
         string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/test/{_dayNumber}.txt");
-        string expected = "1320";
+        string expected = "46";
 
         // Act
         string actual = _day.PartA(data);
@@ -32,7 +32,7 @@ public class Day15Tests
     {
         // Arrange
         string[] data = _dataAccess.GetData($"../../../../../src/AdventOfCode.Data/data/test/{_dayNumber}.txt");
-        string expected = "145";
+        string expected = "51";
 
         // Act
         string actual = _day.PartB(data);
