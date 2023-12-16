@@ -5,6 +5,14 @@ namespace AdventOfCode.Process;
 
 public class Day13 : IDay
 {
+    private char part;
+    public bool acceptRuleUsed;
+    public Day13()
+    {
+        part = 'A';
+        acceptRuleUsed = false;
+    }
+
     public string PartA(string[] input)
     {
         List<int> lenghts = GetLenghts(input);
@@ -17,7 +25,12 @@ public class Day13 : IDay
 
     public string PartB(string[] input)
     {
-        return "Not finished!";
+        part = 'B';
+        List<int> lenghts = GetLenghts(input);
+        List<string[]> pattern = GeneratePattern(input, lenghts);
+
+        //Print(pattern);
+        return SummarizePattern(pattern).ToString();
     }
 
     private static List<int> GetLenghts(string[] data)
@@ -66,12 +79,13 @@ public class Day13 : IDay
         return pattern;
     }
 
-    private static int SummarizePattern(List<string[]> pattern)
+    private int SummarizePattern(List<string[]> pattern)
     {
         int summarizePattern = 0;
 
         foreach (string[] yStrings in pattern)
         {
+            acceptRuleUsed = false;
             int mirrorValue = GetMirrorValue(yStrings) * 100;
             if (mirrorValue == 0)
             {
@@ -83,19 +97,23 @@ public class Day13 : IDay
         return summarizePattern;
     }
 
-    private static int GetMirrorValue(string[] strings)
+    private int GetMirrorValue(string[] strings)
     {
         for (int i = 0; i < strings.Length - 1; i++)
         {
             if (MirrorFound(strings, i, 0))
             {
-                return i + 1;
+                if (acceptRuleUsed)
+                {
+                    return i + 1;
+                }
+                else { continue; }
             }
         }
 
         return 0;
     }
-    private static bool MirrorFound(string[] strings, int i, int x)
+    private bool MirrorFound(string[] strings, int i, int x)
     {
         int lowerI = i - x;
         int upperI = i + 1 + x;
@@ -104,7 +122,7 @@ public class Day13 : IDay
         {
             return true;
         }
-        else if (strings[lowerI] == strings[upperI])
+        else if (StringsIsEqual(strings[lowerI], strings[upperI]))
         {
             if (MirrorFound(strings, i, next))
             {
@@ -113,6 +131,49 @@ public class Day13 : IDay
             else { return false; }
         }
         else { return false; }
+    }
+    private bool StringsIsEqual(string lowerString, string upperString)
+    {
+        if (part != 'B')
+        {
+            if (lowerString == upperString)
+            {
+                acceptRuleUsed = true;
+                return true;
+            }
+            else return false;
+        }
+        else
+        {
+            char[] lowerChars = lowerString.ToCharArray();
+            char[] upperChars = upperString.ToCharArray();
+            int numbNotMatch = 0;
+            for (int i = 0; i < lowerChars.Length; i++)
+            {
+                if (lowerChars[i] != upperChars[i])
+                {
+                    numbNotMatch++;
+                }
+                if (numbNotMatch > 1)
+                {
+                    acceptRuleUsed = false;
+                    return false;
+                }
+            }
+            if (numbNotMatch == 1)
+            {
+                if (acceptRuleUsed)
+                {
+                    return false;
+                }
+                else
+                {
+                    acceptRuleUsed = true;
+                    return true;
+                }
+            }
+            return true;
+        }
     }
     private static string[] ConvertToXStrings(string[] yLines)
     {
