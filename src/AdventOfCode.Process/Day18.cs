@@ -10,29 +10,35 @@ public class Day18 : IDay
 
         var (directions, lenghts, codes) = GenerateDigPlan(input);
 
-        List<Cube> cubes = GenerateDigRoute(directions, lenghts);
+        List<Cube> cubes = GenerateDigRoute(directions, lenghts, 'A');
 
         var (xMax, yMax) = GetBoundaries(cubes);
 
         Cube[,] allCubes = SetupAllCubes(xMax, yMax, cubes);
-        PrintCubes(allCubes);
+        //PrintCubes(allCubes);
         return CountDigCubes(allCubes).ToString();
 
     }
 
     public string PartB(string[] input)
     {
-        return "Not finished!";
+        var (directions, lenghts, codes) = GenerateDigPlanB(input);
+        List<Cube> cubes = GenerateDigRoute(directions, lenghts, 'B');
+        var (xMax, yMax) = GetBoundaries(cubes);
+        Console.WriteLine($"{xMax} {yMax} {cubes.Count}");
+        //Cube[,] allCubes = SetupAllCubes(xMax, yMax, cubes);
+        return " ";
+        //return CountDigCubes(allCubes).ToString();
     }
 
-    private static Cube[,] SetupAllCubes(int xMax, int yMax, List<Cube> cubes)
+    private static Cube[,] SetupAllCubes(long xMax, long yMax, List<Cube> cubes)
     {
 
         Cube[,] allCubes = new Cube[xMax + 1, yMax + 1];
 
-        for (int y = 0; y < allCubes.GetLength(1); y++)
+        for (long y = 0; y < allCubes.GetLength(1); y++)
         {
-            for (int x = 0; x < allCubes.GetLength(0); x++)
+            for (long x = 0; x < allCubes.GetLength(0); x++)
             {
                 allCubes[x, y] = new Cube(x, y, '.');
             }
@@ -42,12 +48,46 @@ public class Day18 : IDay
             allCubes[cube.X, cube.Y] = cube;
         }
 
+        SetCubesOutSide(allCubes);
 
         return allCubes;
     }
-    private static List<Cube> GenerateDigRoute(List<char> directions, List<int> lenghts)
-    {
 
+    private static void SetCubesOutSide(Cube[,] allCubes)
+    {
+        for (long x = 0; x < allCubes.GetLength(0); x++)
+        {
+            for (long y = 0; y < allCubes.GetLength(1); y++)
+            {
+                if ((x == 0 || y == 0 || x == allCubes.GetLength(0) - 1 || y == allCubes.GetLength(1) - 1) && allCubes[x, y].Visual == '.')
+                {
+                    SetNeighborOutside(allCubes, x, y);
+                    continue;
+                }
+            }
+        }
+    }
+    private static void SetNeighborOutside(Cube[,] allCubes, long x, long y)
+    {
+        if (x < 0 || x > allCubes.GetLength(0) - 1 || y < 0 || y > allCubes.GetLength(1) - 1)
+        {
+            return;
+        }
+        if (allCubes[x, y].Visual != '.')
+        {
+            return;
+        }
+        else
+        {
+            allCubes[x, y].Visual = 'O';
+            SetNeighborOutside(allCubes, x - 1, y);
+            SetNeighborOutside(allCubes, x + 1, y);
+            SetNeighborOutside(allCubes, x, y - 1);
+            SetNeighborOutside(allCubes, x, y + 1);
+        }
+    }
+    private static List<Cube> GenerateDigRoute(List<char> directions, List<int> lenghts, char part)
+    {
         List<Cube> cube = new();
 
         int xValue = 0;
@@ -56,43 +96,60 @@ public class Day18 : IDay
         cube.Add(new Cube(xValue, yValue, '#'));
         for (int i = 0; i < lenghts.Count; i++)
         {
-            //for (int j = 1; j <= lenghts[i]; j++)
-            //{
-            switch (directions[i])
+            if (part == 'A')
             {
-                case 'U': yValue -= lenghts[i]; break;
-                case 'D': yValue += lenghts[i]; break;
-                case 'L': xValue -= lenghts[i]; break;
-                case 'R': xValue += lenghts[i]; break;
-                default: break;
+                for (int j = 1; j <= lenghts[i]; j++)
+                {
+                    switch (directions[i])
+                    {
+                        case 'U': yValue--; break;
+                        case 'D': yValue++; break;
+                        case 'L': xValue--; break;
+                        case 'R': xValue++; break;
+                        default: break;
+                    }
+                    cube.Add(new Cube(xValue, yValue, '#'));
+                }
             }
-            cube.Add(new Cube(xValue, yValue, '#'));
-            // }
-
+            else if (part == 'B')
+            {
+                switch (directions[i])
+                {
+                    case 'U': yValue -= lenghts[i]; break;
+                    case 'D': yValue += lenghts[i]; break;
+                    case 'L': xValue -= lenghts[i]; break;
+                    case 'R': xValue += lenghts[i]; break;
+                    default: break;
+                }
+                cube.Add(new Cube(xValue, yValue, '#'));
+            }
         }
+
         return cube;
     }
 
     private class Cube
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public long X { get; set; }
+        public long Y { get; set; }
         public char Visual { get; set; }
+        public bool Ckecked { get; set; }
 
-        public Cube(int x, int y, char visual)
+        public Cube(long x, long y, char visual)
         {
             X = x;
             Y = y;
             Visual = visual;
+            Ckecked = false;
         }
     }
 
-    private static (int, int) GetBoundaries(List<Cube> cubes)
+    private static (long, long) GetBoundaries(List<Cube> cubes)
     {
-        int xMin = 0;
-        int xMax = 0;
-        int yMin = 0;
-        int yMax = 0;
+        long xMin = 0;
+        long xMax = 0;
+        long yMin = 0;
+        long yMax = 0;
 
         foreach (Cube cube in cubes)
         {
@@ -134,14 +191,48 @@ public class Day18 : IDay
         }
         return (directions, lengths, codes);
     }
-    private static int CountDigCubes(Cube[,] allCubes)
+    public static (List<char>, List<int>, List<string>) GenerateDigPlanB(string[] data)
     {
-        int countDig = 0;
-        for (int y = 0; y < allCubes.GetLength(1); y++)
+
+        List<char> directions = new();
+        List<int> lengths = new();
+        List<string> codes = new();
+
+        foreach (string row in data)
         {
-            for (int x = 0; x < allCubes.GetLength(0); x++)
+
+            string[] details = row.Split('#', ')');
+            char[] digits = details[1].ToCharArray();
+            switch (digits[5])
             {
-                if (allCubes[x, y].Visual == '#')
+                case '0': directions.Add('R'); break;
+                case '1': directions.Add('D'); break;
+                case '2': directions.Add('L'); break;
+                case '3': directions.Add('U'); break;
+                default: break;
+            }
+            string hexValue = "";
+            for (int i = 0; i < digits.Length - 1; i++)
+            {
+                hexValue += digits[i];
+            }
+
+            lengths.Add(Convert.ToInt32(hexValue, 16));
+
+            codes.Add(details[1]);
+
+        }
+        return (directions, lengths, codes);
+    }
+
+    private static long CountDigCubes(Cube[,] allCubes)
+    {
+        long countDig = 0;
+        for (long y = 0; y < allCubes.GetLength(1); y++)
+        {
+            for (long x = 0; x < allCubes.GetLength(0); x++)
+            {
+                if (allCubes[x, y].Visual != 'O')
                 {
                     countDig++;
                 }
