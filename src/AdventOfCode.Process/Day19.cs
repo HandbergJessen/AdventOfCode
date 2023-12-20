@@ -22,14 +22,9 @@ public class Day19 : IDay
     {
         var (workflows, ratings, ids) = GenerateData(input);
 
-        return FindCombinations(workflows).ToString();
+        return CombinationRecursive("in", workflows, new long[] { 1, 4000, 1, 4000, 1, 4000, 1, 4000 }).ToString();
     }
 
-    private static long FindCombinations(Dictionary<string, Workflow> workflows)
-    {
-
-        return CombinationRecursive("in", workflows, new long[] { 1, 4000, 1, 4000, 1, 4000, 1, 4000 });
-    }
     private static long CombinationRecursive(string id, Dictionary<string, Workflow> workflows, long[] ranges)
     {
 
