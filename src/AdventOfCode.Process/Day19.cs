@@ -22,7 +22,106 @@ public class Day19 : IDay
     {
         var (workflows, ratings, ids) = GenerateData(input);
 
-        return "Not finished!";
+        return FindCombinations(workflows).ToString();
+    }
+
+    private static long FindCombinations(Dictionary<string, Workflow> workflows)
+    {
+
+        return CombinationRecursive("in", workflows, new long[] { 1, 4000, 1, 4000, 1, 4000, 1, 4000 });
+    }
+    private static long CombinationRecursive(string id, Dictionary<string, Workflow> workflows, long[] ranges)
+    {
+
+        long outCombination = 0;
+
+        if (id == "R")
+        {
+            return 0;
+        }
+        else if (id == "A")
+        {
+            long x = ranges[1] - ranges[0] + 1;
+            long m = ranges[3] - ranges[2] + 1;
+            long a = ranges[5] - ranges[4] + 1;
+            long s = ranges[7] - ranges[6] + 1;
+
+            return x * m * a * s;
+        }
+
+        Workflow wf = workflows[id];
+
+        for (int i = 0; i < wf.Categories.Count; i++)
+        {
+            long[] newRanges = new[] { ranges[0], ranges[1], ranges[2], ranges[3], ranges[4], ranges[5], ranges[6], ranges[7] };
+
+            long value = wf.Values[i];
+            switch (wf.Categories[i], wf.GreaterThan[i])
+            {
+
+                case ('x', true):
+                    if (value > ranges[0])
+                    {
+                        newRanges[0] = value + 1;
+                        ranges[1] = value;
+                    }
+                    break;
+                case ('x', false):
+                    if (value < ranges[1])
+                    {
+                        newRanges[1] = value - 1;
+                        ranges[0] = value;
+                    }
+                    break;
+                case ('m', true):
+                    if (value > ranges[2])
+                    {
+                        newRanges[2] = value + 1;
+                        ranges[3] = value;
+                    }
+                    break;
+                case ('m', false):
+                    if (value < ranges[3])
+                    {
+                        newRanges[3] = value - 1;
+                        ranges[2] = value;
+                    }
+                    break;
+                case ('a', true):
+                    if (value > ranges[4])
+                    {
+                        newRanges[4] = value + 1;
+                        ranges[5] = value;
+                    }
+                    break;
+                case ('a', false):
+                    if (value < ranges[5])
+                    {
+                        newRanges[5] = value - 1;
+                        ranges[4] = value;
+                    }
+                    break;
+                case ('s', true):
+                    if (value > ranges[6])
+                    {
+                        newRanges[6] = value + 1;
+                        ranges[7] = value;
+                    }
+                    break;
+                case ('s', false):
+                    if (value < ranges[7])
+                    {
+                        newRanges[7] = value - 1;
+                        ranges[6] = value;
+                    }
+                    break;
+                default: break;
+            }
+            outCombination += CombinationRecursive(wf.NextWF[i], workflows, newRanges);
+        }
+        outCombination += CombinationRecursive(wf.DefaultWF, workflows, ranges);
+
+        return outCombination;
     }
 
 
@@ -30,11 +129,7 @@ public class Day19 : IDay
     {
         List<Rating> ratings = new();
         List<string> ids = new();
-        Dictionary<string, Workflow> outWorkflows = new()
-        {
-            { "A", new Workflow("A") },
-            { "R", new Workflow("R") }
-        };
+        Dictionary<string, Workflow> outWorkflows = new();
         bool workflowData = true;
         foreach (string line in data)
         {
@@ -87,7 +182,10 @@ public class Day19 : IDay
                         currentWF.NextWF.Add(details[1]);
                         char[] characters = details[0].ToCharArray();
                         currentWF.Categories.Add(characters[0]);
-                        currentWF.Signs.Add(characters[1]);
+                        if (characters[1] == '>')
+                            currentWF.GreaterThan.Add(true);
+                        else
+                            currentWF.GreaterThan.Add(false);
                         string[] values = details[0].Split('<', '>');
                         currentWF.Values.Add(int.Parse(values[1]));
                     }
@@ -123,14 +221,14 @@ public class Day19 : IDay
                 case 's': ratingValue = rating.S; break;
                 default: break;
             }
-            if (wf.Signs[i] == '<')
+            if (!wf.GreaterThan[i])
             {
                 if (ratingValue < wf.Values[i])
                 {
                     return LoopWorkflows(wf.NextWF[i], rating, workflows);
                 }
             }
-            else if (wf.Signs[i] == '>')
+            else if (wf.GreaterThan[i])
             {
                 if (ratingValue > wf.Values[i])
                 {
@@ -160,7 +258,7 @@ public class Day19 : IDay
     {
         public string Id { get; private set; }
         public List<char> Categories { get; private set; }
-        public List<char> Signs { get; private set; }
+        public List<bool> GreaterThan { get; private set; }
         public List<int> Values { get; private set; }
         public List<string> NextWF { get; private set; }
         public string DefaultWF { get; set; }
@@ -169,7 +267,7 @@ public class Day19 : IDay
         {
             Id = id;
             Categories = new();
-            Signs = new();
+            GreaterThan = new();
             Values = new();
             NextWF = new();
             DefaultWF = "";
@@ -208,7 +306,7 @@ public class Day19 : IDay
             Console.Write($"{workflow.Id} ");
             for (int i = 0; i < workflow.Categories.Count; i++)
             {
-                Console.Write($"{workflow.Categories[i]}{workflow.Signs[i]}{workflow.Values[i]}:{workflow.NextWF[i]}, ");
+                Console.Write($"{workflow.Categories[i]}{workflow.GreaterThan[i]}{workflow.Values[i]}:{workflow.NextWF[i]}, ");
             }
             Console.WriteLine($"{workflow.DefaultWF}");
         }
