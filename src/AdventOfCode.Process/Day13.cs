@@ -1,6 +1,3 @@
-using System.Net.NetworkInformation;
-using System.Reflection.Metadata;
-
 namespace AdventOfCode.Process;
 
 public class Day13 : IDay
