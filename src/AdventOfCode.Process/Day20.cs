@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 namespace AdventOfCode.Process;
 
 public class Day20 : IDay
@@ -6,8 +8,8 @@ public class Day20 : IDay
     {
         Dictionary<string, Module> modules = GenerateData(input);
 
-        StartButton4000(modules);
-        PrintModules(modules);
+        StartButton1000(modules);
+        //PrintModules(modules);
 
         return CountPulses(modules).ToString();
     }
@@ -17,22 +19,29 @@ public class Day20 : IDay
         return "Not finished!";
     }
 
-    private static void StartButton4000(Dictionary<string, Module> modules)
+    private static void StartButton1000(Dictionary<string, Module> modules)
     {
-        for (int i = 1; i <= 2; i++)
+        for (int i = 1; i <= 1000; i++)
         {
             List<string> destinations = new() { "broadcaster" };
             List<char> pulses = new() { 'L' };
+            List<string> fromDestinations = new() { " " };
 
-            StartPulse(destinations, pulses, modules);
+            StartPulse(destinations, pulses, modules, fromDestinations);
         }
     }
-    private static void StartPulse(List<string> destinations, List<char> pulses, Dictionary<string, Module> modules)
+    private static void StartPulse(List<string> destinations, List<char> pulses, Dictionary<string, Module> modules, List<string> fromDestinations)
     {
+        List<string> emptyDestinations = new();
         List<string> newDestinations = new();
         List<char> newPulses = new();
+        List<string> newFromDestinations = new();
         for (int i = 0; i < destinations.Count; i++)
         {
+            if (!modules.ContainsKey(destinations[i]))
+            {
+                modules.Add(destinations[i], new Module(destinations[i], 'O', emptyDestinations));
+            }
             Module module = modules[destinations[i]];
             module.RecentPulse = pulses[i];
 
@@ -43,12 +52,11 @@ public class Day20 : IDay
                 else
                     module.HighPulseCount++;
 
-                Console.WriteLine($" -> broadcaster -> {module.RecentPulse} {module.LowPulseCount} {module.HighPulseCount}");
                 for (int j = 0; j < module.Destinations.Count; j++)
                 {
                     newDestinations.Add(module.Destinations[j]);
                     newPulses.Add(module.RecentPulse);
-                    Console.WriteLine($"broadcaster -> {module.RecentPulse} {module.Destinations[j]}");
+                    newFromDestinations.Add(module.Id);
                 }
             }
             else if (module.Prefix == '%') // Flip Flop
@@ -56,32 +64,38 @@ public class Day20 : IDay
                 if (module.RecentPulse == 'L')
                 {
                     module.LowPulseCount++;
+                    char tempPuls;
+                    if (module.ChangeSwitchToOn()) tempPuls = 'H';
+                    else tempPuls = 'L';
 
                     for (int j = 0; j < module.Destinations.Count; j++)
                     {
                         newDestinations.Add(module.Destinations[j]);
-                        char tempPuls;
-                        if (module.ChangeSwitchToOn())
-                        {
-                            tempPuls = 'H';
-                            newPulses.Add('H');
-                        }
-                        else
-                        {
-                            tempPuls = 'L';
-                            newPulses.Add('L');
-                        }
-                        Console.WriteLine($"{module.Id} -> {tempPuls} {module.Destinations[j]} {module.LowPulseCount} {module.HighPulseCount}");
+                        newPulses.Add(tempPuls);
+                        newFromDestinations.Add(module.Id);
                     }
                 }
                 else
                 {
                     module.HighPulseCount++;
-                    Console.WriteLine($"{module.Id} -> {module.RecentPulse} END?? {module.LowPulseCount} {module.HighPulseCount}");
                 }
             }
             else if (module.Prefix == '&') // Conjunction
             {
+                if (module.AllRecentPulses.ContainsKey(fromDestinations[i]))
+                {
+                    module.AllRecentPulses[fromDestinations[i]] = module.RecentPulse;
+                }
+                else
+                {
+                    module.AllRecentPulses.Add(fromDestinations[i], module.RecentPulse);
+                }
+                char tempPuls = 'L';
+                foreach (string key in module.AllRecentPulses.Keys)
+                {
+                    char recentPulse = module.AllRecentPulses[key];
+                    if (recentPulse == 'L') tempPuls = 'H';
+                }
                 for (int j = 0; j < module.Destinations.Count; j++)
                 {
                     newDestinations.Add(module.Destinations[j]);
@@ -93,30 +107,21 @@ public class Day20 : IDay
                     {
                         module.HighPulseCount++;
                     }
-                    module.AllRecentPulses.Add(module.RecentPulse);
-
-                    bool allHighPulses = true;
-                    foreach (char recentPulse in module.AllRecentPulses)
-                    {
-                        if (recentPulse == 'L') allHighPulses = false;
-                    }
-                    char tempPuls;
-                    if (allHighPulses)
-                    {
-                        tempPuls = 'L';
-                        newPulses.Add('L');
-                    }
-                    else
-                    {
-                        tempPuls = 'H';
-                        newPulses.Add('H');
-                    }
-                    Console.WriteLine($"{module.Id} -> {tempPuls} {module.Destinations[j]} {module.LowPulseCount} {module.HighPulseCount}");
+                    newPulses.Add(tempPuls);
+                    newFromDestinations.Add(module.Id);
                 }
             }
+            else if (module.Prefix == 'O')
+            {
+                if (module.RecentPulse == 'L')
+                    module.LowPulseCount++;
+                else
+                    module.HighPulseCount++;
+            }
         }
+
         if (newDestinations.Count > 0)
-            StartPulse(newDestinations, newPulses, modules);
+            StartPulse(newDestinations, newPulses, modules, newFromDestinations);
     }
 
     private static Dictionary<string, Module> GenerateData(string[] data)
@@ -144,6 +149,24 @@ public class Day20 : IDay
                 modules.Add(id[1], new Module(id[1], prefix[0], destinations));
             }
         }
+        foreach (string key in modules.Keys)
+        {
+            Module moduleKey = modules[key];
+            if (moduleKey.Prefix == '&')
+            {
+                foreach (string key2 in modules.Keys)
+                {
+                    Module moduleKey2 = modules[key2];
+                    foreach (string dest in moduleKey2.Destinations)
+                    {
+                        if (dest == key)
+                        {
+                            moduleKey.AllRecentPulses.Add(moduleKey2.Id, 'L');
+                        }
+                    }
+                }
+            }
+        }
         return modules;
     }
 
@@ -152,7 +175,7 @@ public class Day20 : IDay
         public string Id { get; private set; }
         public char Prefix { get; private set; }
         public List<string> Destinations { get; private set; }
-        public List<char> AllRecentPulses { get; set; }
+        public Dictionary<string, char> AllRecentPulses { get; set; }
         public char RecentPulse { get; set; }
         public long LowPulseCount { get; set; }
         public long HighPulseCount { get; set; }
@@ -164,7 +187,7 @@ public class Day20 : IDay
             Prefix = prefix;
             Destinations = destinations;
             AllRecentPulses = new();
-            RecentPulse = 'L';
+            RecentPulse = 'H';
             LowPulseCount = 0;
             HighPulseCount = 0;
             SwitchOn = false;
@@ -177,7 +200,7 @@ public class Day20 : IDay
             return SwitchOn;
         }
     }
-    private static (long, long) CountPulses(Dictionary<string, Module> modules)
+    private static long CountPulses(Dictionary<string, Module> modules)
     {
         long countLowPulses = 0;
         long countHighPulses = 0;
@@ -189,13 +212,10 @@ public class Day20 : IDay
             countLowPulses += module.LowPulseCount;
             countHighPulses += module.HighPulseCount;
         }
-        return (countLowPulses, countHighPulses);
+        return countLowPulses * countHighPulses;
     }
     private static void PrintModules(Dictionary<string, Module> modules)
     {
-        Console.WriteLine();
-        Console.WriteLine();
-
         //foreach (string key  in ids)
         foreach (string key in modules.Keys)
         {
